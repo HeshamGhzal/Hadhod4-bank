@@ -53,6 +53,13 @@ int main()
 	login_bank_system();
 	cout << endl;
 }
+void clear_screen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
 
 static string user_input(string out)
 {
@@ -328,7 +335,7 @@ static void print_Clint_data_line_to_file(string separator, string file_name)
 	sclient client;
 	char answer = 'n';
 	do {
-		system("cls");
+		clear_screen();
 		cout << "            Adding New Client \n\n";
 		Read_new_clint_data(client);
 		string s = convert_record_data_to_line(client, separator) + "\n";
@@ -346,7 +353,7 @@ static void print_Clint_data_line_to_file(string separator, string file_name, st
 	char answer = 'y';
 	while (tolower(answer) == 'y')
 	{
-		system("cls");
+		clear_screen();
 		cout << "            Adding New Client \n\n";
 		target = user_input("Enter New Account number   : ");
 		while (find_clients_data_by_AccountNumber(file_name, separator, target, client))
@@ -378,12 +385,14 @@ static void print_Clint_data_line_to_file(string separator, string file_name, st
 
 static void End_screen()
 {
-	system("cls");
+	clear_screen();
 	cout << "\n=======================\n";
 	cout << "       End screen";
 	cout << "\n=======================\n";
 	cout << "\nPress any kay to Exit";
-	system("pause>0");
+	cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 
 }
 
@@ -499,7 +508,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 	double balance_update = 0;
 	if (selection == "1")
 	{
-		system("cls");
+		clear_screen();
 		cout << "\n===================================\n";
 		cout << "        client deposit screen";
 		cout << "\n===================================\n";
@@ -510,7 +519,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 	}
 	else if (selection == "2")
 	{
-		system("cls");
+		clear_screen();
 		cout << "\n===================================\n";
 		cout << "       client withdrow screen";
 		cout << "\n===================================\n";
@@ -522,7 +531,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 	}
 	else if (selection == "3")
 	{
-		system("cls");
+		clear_screen();
 		cout << "\n===================================\n";
 		cout << "    client Total balance screen";
 		cout << "\n===================================\n";
@@ -536,7 +545,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 static string Transaction_menu()
 {
 	string selection;
-	system("cls");
+	clear_screen();
 	cout << "\n===================================\n";
 	cout << "        Transaction screen";
 	cout << "\n===================================\n";
@@ -563,8 +572,10 @@ static void show_transaction_menu()
 	Transaction(file_name, separator, target, client, selection);
 	if (selection == "4")return;
 	cout << "Press any kay to return to transaction menu";
-	system("pause>0");
-	//system("cls");
+	cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
+	//clear_screen();
 
 	show_transaction_menu();
 }
@@ -578,7 +589,7 @@ static void project_bank(int select, suser user)
 
 	if (select == 1)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cshow))
 		{
 			cout << "\n                        =================================\n";
@@ -590,13 +601,17 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to show client\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 	}
 	else if (select == 2)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cadd))
 		{
 			cout << "\n===================================\n";
@@ -610,13 +625,15 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to add client\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 	}
 	else if (select == 3)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cdelet))
 		{
 			cout << "\n===================================\n";
@@ -630,13 +647,15 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to delete client\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 	}
 	else if (select == 4)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cupdate))
 		{
 			cout << "\n===================================\n";
@@ -649,13 +668,15 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to update client\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 	}
 	else if (select == 5)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cfind))
 		{
 			cout << "\n===================================\n";
@@ -685,7 +706,9 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to find client\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 
 		}
@@ -693,7 +716,7 @@ static void project_bank(int select, suser user)
 	}
 	else if (select == 6)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, cdeposit) || check_user_permission(user, cwithdrow))
 		{
 			show_transaction_menu();
@@ -702,7 +725,9 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to do transaction\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 
@@ -722,7 +747,9 @@ static void project_bank(int select, suser user)
 		{
 			cout << "You dont have permission to manage user\n";
 			cout << "Press any kay to return to main menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_main_menu(user);
 		}
 
@@ -734,7 +761,7 @@ static void project_bank(int select, suser user)
 }
 static string main_menu()
 {
-	system("cls");
+	clear_screen();
 	string selection;
 	cout << "===================================\n";
 	cout << "          main menu screen        ";
@@ -879,7 +906,9 @@ void show_main_menu(suser user)
 	project_bank(sellct, user);
 	if (sellct == 8) { return; }
 	cout << "\nPress any kay to return to main menu\n";
-	system("pause>0");
+	cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 	show_main_menu(user);
 }
 static string convert_record_data_to_line(suser user, string separator)
@@ -993,7 +1022,7 @@ static void print_user_data_line_to_file(string separator, string file_name, str
 	char answer = 'y';
 	while (tolower(answer) == 'y')
 	{
-		system("cls");
+		clear_screen();
 		cout << "            Adding New User \n\n";
 		target = user_input("Enter New user Name   : ");
 
@@ -1100,7 +1129,7 @@ static void Bbank_user(int select, suser user, bool show_password)
 
 	if (select == 1)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, pshow))
 		{
 
@@ -1113,13 +1142,15 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to show user\n";
 			cout << "Press any kay to return to user menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_user_menu(user);
 		}
 	}
 	else if (select == 2)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, padd))
 		{
 			cout << "\n===================================\n";
@@ -1132,14 +1163,16 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to add user\n";
 			cout << "Press any kay to return to user menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_user_menu(user);
 		}
 	}
 	else if (select == 3)
 	{
 
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, pdelet))
 		{
 			cout << "\n===================================\n";
@@ -1151,7 +1184,9 @@ static void Bbank_user(int select, suser user, bool show_password)
 			{
 				cout << "You dont have permission to delete this user\n";
 				cout << "Press any kay to return to user menu\n";
-				system("pause>0");
+				cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 				show_user_menu(user);
 			}
 			else
@@ -1163,13 +1198,15 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to delete user\n";
 			cout << "Press any kay to return to user menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_user_menu(user);
 		}
 	}
 	else if (select == 4)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, pupdate))
 		{
 			cout << "\n===================================\n";
@@ -1182,13 +1219,15 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to update user\n";
 			cout << "Press any kay to return to user menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_user_menu(user);
 		}
 	}
 	else if (select == 5)
 	{
-		system("cls");
+		clear_screen();
 		if (check_user_permission(user, pfind))
 		{
 			cout << "\n===================================\n";
@@ -1209,7 +1248,9 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to find user\n";
 			cout << "Press any kay to return to user menu\n";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1220,7 +1261,7 @@ static void Bbank_user(int select, suser user, bool show_password)
 }
 static string user_menu()
 {
-	system("cls");
+	clear_screen();
 	string selection;
 	cout << "===================================\n";
 	cout << "         Manage user menu screen        ";
@@ -1243,7 +1284,7 @@ static string user_menu()
 }
 suser user_login()
 {
-	system("cls");
+	clear_screen();
 	suser user;
 	string file_name = "user.txt";
 	string separator = "#<>#";
@@ -1262,7 +1303,9 @@ suser user_login()
 		{
 			cout << "Invalid password\n";
 			cout << "press any kay to Relogin";
-			system("pause>0");
+			cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 			return user_login();
 		}
 	}
@@ -1270,7 +1313,9 @@ suser user_login()
 	{
 		cout << "User Not found \n";
 		cout << "press any kay to Relogin";
-		system("pause>0");
+		cout << "Press Enter to continue..."; 
+cin.ignore();
+cin.get();
 		return user_login();
 	}
 }
@@ -1282,6 +1327,8 @@ void show_user_menu(suser user)
 }
 void login_bank_system()
 {
+	// suser user;
+	// user.permission=-1;
 	suser user = user_login();
 	show_main_menu(user);
 }
