@@ -253,7 +253,7 @@ static void print_clint_date_record_in_form(sclient client)
 	cout << "\n=================================================================================";
 }
 
-static void show_clints_data_in_form(string file_name, string separator)
+static void show_clients_data_in_form(string file_name, string separator)
 {
 	vector<string>vs;
 	sclient client;
@@ -407,7 +407,7 @@ static vector<string> deposit_clients_balance_by_AccountNumber(string file_name,
 	return vs;
 }
 
-static double Balance_withdrow(sclient client)
+static double Balance_withdraw(sclient client)
 {
 	double withdrow;
 	cout << "Enter value you will withdrow : ";
@@ -421,7 +421,7 @@ static double Balance_withdrow(sclient client)
 
 	return client.balance - withdrow;
 }
-static vector<string> withdrow_clients_balance_by_AccountNumber(string file_name, string sperator, string target, sclient& client)
+static vector<string> withdraw_clients_balance_by_AccountNumber(string file_name, string sperator, string target, sclient& client)
 {
 	vector<string>vs;
 	vs = get_string_from_file_to_vector(file_name);
@@ -439,7 +439,7 @@ static vector<string> withdrow_clients_balance_by_AccountNumber(string file_name
 				cin >> answer;
 				if (tolower(answer) == 'y')
 				{
-					client.balance = Balance_withdrow(client);
+					client.balance = Balance_withdraw(client);
 					cout << "\nNew client balance =  " << client.balance << "\n";
 					s = convert_record_data_to_line(client, sperator);
 					write_string_from_vector_to_file(vs, file_name);
@@ -493,7 +493,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 		cout << "\n===================================\n";
 
 		target = user_input("Enter Account number : ");
-		withdrow_clients_balance_by_AccountNumber(file_name, separator, target, client);
+		withdraw_clients_balance_by_AccountNumber(file_name, separator, target, client);
 		cout << endl;
 
 	}
@@ -503,7 +503,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 		cout << "\n===================================\n";
 		cout << "    client Total balance screen";
 		cout << "\n===================================\n";
-		show_clints_data_in_form(file_name, separator);
+		show_clients_data_in_form(file_name, separator);
 
 		cout << "\nTotal balance of all clients is : ";
 		cout << sum_all_clients_balances(file_name, separator) << "\n";
@@ -560,7 +560,7 @@ static void project_bank(int select, suser user)
 			cout << "\n                        =================================\n";
 			cout << "                             clients data screen         ";
 			cout << "\n                        =================================\n";
-			show_clints_data_in_form(file_name, separator);
+			show_clients_data_in_form(file_name, separator);
 		}
 		else
 		{

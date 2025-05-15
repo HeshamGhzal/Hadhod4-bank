@@ -1,17 +1,26 @@
-#include<iostream>
-#include<string>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <vector>
 #include <fstream>
-#include<iomanip>
-
+#include <iomanip>
 
 using namespace std;
 
-enum  euser_prmission
+enum euser_permission
 {
-	pall = -1, pshow = 1, padd = 2, pdelet = 4, pupdate = 8, pfind = 16,
-	cshow = 32, cadd = 64, cdelet = 128, cupdate = 256,
-	cfind = 512, cdeposit = 1024, cwithdrow = 2048
+	pall = -1,
+	pshow = 1,
+	padd = 2,
+	pdelet = 4,
+	pupdate = 8,
+	pfind = 16,
+	cshow = 32,
+	cadd = 64,
+	cdelete = 128,
+	cupdate = 256,
+	cfind = 512,
+	cdeposit = 1024,
+	cwithdraw = 2048
 };
 struct sclient
 {
@@ -38,26 +47,23 @@ void show_user_menu(suser user);
 void login_bank_system();
 
 bool check_user_permission(suser user, int permission);
+void ATM_machine();
 
 void show_main_menu(suser user);
 
-
-
 int main()
 {
+	// login_bank_system();
 
-	/*suser user;
-	user.permission = cfind;
-	int permission = 1024;
-	cout << check_user_permission(user, permission);*/
-	login_bank_system();
+	ATM_machine();
 	cout << endl;
 }
-void clear_screen() {
+void clear_screen()
+{
 #ifdef _WIN32
-    system("cls");
+	system("cls");
 #else
-    system("clear");
+	system("clear");
 #endif
 }
 
@@ -69,7 +75,7 @@ static string user_input(string out)
 	return input;
 }
 
-static vector<string>get_string_from_file_to_vector(string file_name)
+static vector<string> get_string_from_file_to_vector(string file_name)
 {
 	vector<string> vs;
 	fstream myfile;
@@ -92,7 +98,6 @@ static vector<string> spelt_each_word_in_string(string s, string separator)
 	size_t pos = s.find(separator);
 	string word = "";
 	int counter = 0;
-
 
 	while ((pos = s.find(separator)) != string::npos)
 	{
@@ -130,9 +135,9 @@ static void print_client_date_record(sclient client)
 	cout << "Client Balance        : " << client.balance << "\n";
 }
 
-static bool find_clients_data_by_AccountNumber(string file_name, string separator, string target, sclient& client)
+static bool find_clients_data_by_AccountNumber(string file_name, string separator, string target, sclient &client)
 {
-	vector<string>vs;
+	vector<string> vs;
 	vs = get_string_from_file_to_vector(file_name);
 
 	for (string cl : vs)
@@ -161,13 +166,12 @@ static void write_string_from_vector_to_file(vector<string> vs, string file_name
 	myfile.close();
 }
 
-
-static sclient Read_new_clint_data(sclient& client)
+static sclient Read_new_clint_data(sclient &client)
 {
 	cout << "Enter account number : ";
 	getline(cin >> ws, client.account_num);
 
-	cout << "Enter pincode : ";
+	cout << "Enter pin code : ";
 	getline(cin >> ws, client.pin_code);
 
 	cout << "Enter client name : ";
@@ -176,16 +180,16 @@ static sclient Read_new_clint_data(sclient& client)
 	cout << "Enter client phone : ";
 	getline(cin, client.phone);
 
-	cout << "Ener client balance : ";
+	cout << "Enter client balance : ";
 	cin >> client.balance;
 	return client;
 }
 
-static sclient Read_new_clint_data(sclient& client, string target)
+static sclient Read_new_clint_data(sclient &client, string target)
 {
 	client.account_num = target;
 
-	cout << "Enter pincode : ";
+	cout << "Enter pin code : ";
 	getline(cin >> ws, client.pin_code);
 
 	cout << "Enter client name : ";
@@ -194,11 +198,10 @@ static sclient Read_new_clint_data(sclient& client, string target)
 	cout << "Enter client phone : ";
 	getline(cin, client.phone);
 
-	cout << "Ener client balance : ";
+	cout << "Enter client balance : ";
 	cin >> client.balance;
 	return client;
 }
-
 
 static string convert_record_data_to_line(sclient client, string separator)
 {
@@ -211,9 +214,9 @@ static string convert_record_data_to_line(sclient client, string separator)
 	return s;
 }
 
-static vector<string> update_clients_data_by_AccountNumber(string file_name, string separator, string target, sclient& client)
+static vector<string> update_clients_data_by_AccountNumber(string file_name, string separator, string target, sclient &client)
 {
-	vector<string>vs;
+	vector<string> vs;
 	vs = get_string_from_file_to_vector(file_name);
 
 	target = user_input("Enter Account number you wont to update: ");
@@ -221,7 +224,7 @@ static vector<string> update_clients_data_by_AccountNumber(string file_name, str
 
 	if (find_clients_data_by_AccountNumber(file_name, separator, target, client))
 	{
-		for (string& s : vs)
+		for (string &s : vs)
 		{
 			client = convert_lin_data_to_record(s, separator);
 			if (client.account_num == target)
@@ -251,7 +254,6 @@ static vector<string> update_clients_data_by_AccountNumber(string file_name, str
 	return vs;
 }
 
-
 static void print_clint_date_record_in_form(sclient client)
 {
 	cout << "\n";
@@ -264,9 +266,9 @@ static void print_clint_date_record_in_form(sclient client)
 	cout << "\n=================================================================================";
 }
 
-static void show_clints_data_in_form(string file_name, string separator)
+static void show_clients_data_in_form(string file_name, string separator)
 {
-	vector<string>vs;
+	vector<string> vs;
 	sclient client;
 	vs = get_string_from_file_to_vector(file_name);
 	cout << "\t\t\t\tlist of [" << vs.size() << "] client(s)";
@@ -288,13 +290,13 @@ static void show_clints_data_in_form(string file_name, string separator)
 
 static vector<string> delete_clients_data_by_AccountNumber(string file_name, string separator, string target)
 {
-	vector<string>vs;
+	vector<string> vs;
 	sclient client;
 	vs = get_string_from_file_to_vector(file_name);
 
 	if (find_clients_data_by_AccountNumber(file_name, separator, target, client))
 	{
-		for (string& cl : vs)
+		for (string &cl : vs)
 		{
 			client = convert_lin_data_to_record(cl, separator);
 			if (client.account_num == target)
@@ -334,17 +336,18 @@ static void print_Clint_data_line_to_file(string separator, string file_name)
 {
 	sclient client;
 	char answer = 'n';
-	do {
+	do
+	{
 		clear_screen();
 		cout << "            Adding New Client \n\n";
 		Read_new_clint_data(client);
 		string s = convert_record_data_to_line(client, separator) + "\n";
 		print_string_to_file(s, file_name);
-		cout << "\nClient added successfully\n" << "\nDo you wont To add new client [ y/n] : ";
+		cout << "\nClient added successfully\n"
+			 << "\nDo you wont To add new client [ y/n] : ";
 		cin >> answer;
 		cout << "\n";
 	} while (tolower(answer) == 'y');
-
 }
 
 static void print_Clint_data_line_to_file(string separator, string file_name, string target)
@@ -376,11 +379,11 @@ static void print_Clint_data_line_to_file(string separator, string file_name, st
 		Read_new_clint_data(client, target);
 		string s = convert_record_data_to_line(client, separator) + "\n";
 		print_string_to_file(s, file_name);
-		cout << "\nClient added successfully\n" << "\nDo you wont To add new client [ y/n] : ";
+		cout << "\nClient added successfully\n"
+			 << "\nDo you wont To add new client [ y/n] : ";
 		cin >> answer;
 		cout << "\n";
 	};
-
 }
 
 static void End_screen()
@@ -390,10 +393,9 @@ static void End_screen()
 	cout << "       End screen";
 	cout << "\n=======================\n";
 	cout << "\nPress any kay to Exit";
-	cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
 
+	cin.ignore();
+	cin.get();
 }
 
 static double Balance_deposit(sclient client)
@@ -404,16 +406,16 @@ static double Balance_deposit(sclient client)
 	return client.balance + deposit;
 }
 
-static vector<string> deposit_clients_balance_by_AccountNumber(string file_name, string sperator, string target, sclient& client)
+static vector<string> deposit_clients_balance_by_AccountNumber(string file_name, string separator, string target, sclient &client)
 {
-	vector<string>vs;
+	vector<string> vs;
 	vs = get_string_from_file_to_vector(file_name);
 
-	if (find_clients_data_by_AccountNumber(file_name, sperator, target, client))
+	if (find_clients_data_by_AccountNumber(file_name, separator, target, client))
 	{
-		for (string& s : vs)
+		for (string &s : vs)
 		{
-			client = convert_lin_data_to_record(s, sperator);
+			client = convert_lin_data_to_record(s, separator);
 			if (client.account_num == target)
 			{
 				print_client_date_record(client);
@@ -424,7 +426,7 @@ static vector<string> deposit_clients_balance_by_AccountNumber(string file_name,
 				{
 					client.balance = Balance_deposit(client);
 					cout << "\nNew client balance =  " << client.balance << "\n";
-					s = convert_record_data_to_line(client, sperator);
+					s = convert_record_data_to_line(client, separator);
 					write_string_from_vector_to_file(vs, file_name);
 					cout << "\nClient balance updated successfully\n";
 					break;
@@ -439,41 +441,41 @@ static vector<string> deposit_clients_balance_by_AccountNumber(string file_name,
 	return vs;
 }
 
-static double Balance_withdrow(sclient client)
+static double Balance_withdraw(sclient client)
 {
-	double withdrow;
-	cout << "Enter value you will withdrow : ";
-	cin >> withdrow;
-	while (withdrow > client.balance)
+	double withdraw;
+	cout << "Enter value you will withdraw : ";
+	cin >> withdraw;
+	while (withdraw > client.balance)
 	{
 		cout << "No enough balance\n";
 		cout << "Enter less value  : ";
-		cin >> withdrow;
+		cin >> withdraw;
 	}
 
-	return client.balance - withdrow;
+	return client.balance - withdraw;
 }
-static vector<string> withdrow_clients_balance_by_AccountNumber(string file_name, string sperator, string target, sclient& client)
+static vector<string> withdraw_clients_balance_by_AccountNumber(string file_name, string separator, string target, sclient &client)
 {
-	vector<string>vs;
+	vector<string> vs;
 	vs = get_string_from_file_to_vector(file_name);
 
-	if (find_clients_data_by_AccountNumber(file_name, sperator, target, client))
+	if (find_clients_data_by_AccountNumber(file_name, separator, target, client))
 	{
-		for (string& s : vs)
+		for (string &s : vs)
 		{
-			client = convert_lin_data_to_record(s, sperator);
+			client = convert_lin_data_to_record(s, separator);
 			if (client.account_num == target)
 			{
 				print_client_date_record(client);
-				cout << "\nAre you sure you wont to withdrow [y]or[n] : ";
+				cout << "\nAre you sure you wont to withdraw [y]or[n] : ";
 				char answer = 'n';
 				cin >> answer;
 				if (tolower(answer) == 'y')
 				{
-					client.balance = Balance_withdrow(client);
+					client.balance = Balance_withdraw(client);
 					cout << "\nNew client balance =  " << client.balance << "\n";
-					s = convert_record_data_to_line(client, sperator);
+					s = convert_record_data_to_line(client, separator);
 					write_string_from_vector_to_file(vs, file_name);
 					cout << "\nClient balance updated successfully\n";
 					break;
@@ -490,7 +492,7 @@ static vector<string> withdrow_clients_balance_by_AccountNumber(string file_name
 
 static double sum_all_clients_balances(string file_name, string separator)
 {
-	vector<string>vs;
+	vector<string> vs;
 	sclient client;
 	double total_balance = 0;
 	vs = get_string_from_file_to_vector(file_name);
@@ -503,7 +505,7 @@ static double sum_all_clients_balances(string file_name, string separator)
 	return total_balance;
 }
 
-static void Transaction(string file_name, string separator, string target, sclient& client, string selection)
+static void Transaction(string file_name, string separator, string target, sclient &client, string selection)
 {
 	double balance_update = 0;
 	if (selection == "1")
@@ -521,13 +523,12 @@ static void Transaction(string file_name, string separator, string target, sclie
 	{
 		clear_screen();
 		cout << "\n===================================\n";
-		cout << "       client withdrow screen";
+		cout << "       client withdraw screen";
 		cout << "\n===================================\n";
 
 		target = user_input("Enter Account number : ");
-		withdrow_clients_balance_by_AccountNumber(file_name, separator, target, client);
+		withdraw_clients_balance_by_AccountNumber(file_name, separator, target, client);
 		cout << endl;
-
 	}
 	else if (selection == "3")
 	{
@@ -535,7 +536,7 @@ static void Transaction(string file_name, string separator, string target, sclie
 		cout << "\n===================================\n";
 		cout << "    client Total balance screen";
 		cout << "\n===================================\n";
-		show_clints_data_in_form(file_name, separator);
+		show_clients_data_in_form(file_name, separator);
 
 		cout << "\nTotal balance of all clients is : ";
 		cout << sum_all_clients_balances(file_name, separator) << "\n";
@@ -551,7 +552,7 @@ static string Transaction_menu()
 	cout << "\n===================================\n";
 
 	cout << "[1] Deposit\n";
-	cout << "[2] Withdrow\n";
+	cout << "[2] Withdraw\n";
 	cout << "[3] Total balance\n";
 	cout << "[4] Exit\n";
 
@@ -564,18 +565,18 @@ static string Transaction_menu()
 	}
 
 	return selection;
-
 }
 static void show_transaction_menu()
 {
 	string selection = Transaction_menu();
 	Transaction(file_name, separator, target, client, selection);
-	if (selection == "4")return;
+	if (selection == "4")
+		return;
 	cout << "Press any kay to return to transaction menu";
-	cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
-	//clear_screen();
+
+	cin.ignore();
+	cin.get();
+	// clear_screen();
 
 	show_transaction_menu();
 }
@@ -595,17 +596,17 @@ static void project_bank(int select, suser user)
 			cout << "\n                        =================================\n";
 			cout << "                             clients data screen         ";
 			cout << "\n                        =================================\n";
-			show_clints_data_in_form(file_name, separator);
+			show_clients_data_in_form(file_name, separator);
 		}
 		else
 		{
 			cout << "You dont have permission to show client\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
 	}
@@ -618,23 +619,22 @@ cin.get();
 			cout << "        client add screen";
 			cout << "\n===================================\n";
 
-
 			print_Clint_data_line_to_file(separator, file_name, target);
 		}
 		else
 		{
 			cout << "You dont have permission to add client\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
 	}
 	else if (select == 3)
 	{
 		clear_screen();
-		if (check_user_permission(user, cdelet))
+		if (check_user_permission(user, cdelete))
 		{
 			cout << "\n===================================\n";
 			cout << "        client delete screen";
@@ -647,9 +647,9 @@ cin.get();
 		{
 			cout << "You dont have permission to delete client\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
 	}
@@ -667,10 +667,9 @@ cin.get();
 		else
 		{
 			cout << "You dont have permission to update client\n";
-			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
 	}
@@ -706,18 +705,16 @@ cin.get();
 		{
 			cout << "You dont have permission to find client\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
-
 		}
-
 	}
 	else if (select == 6)
 	{
 		clear_screen();
-		if (check_user_permission(user, cdeposit) || check_user_permission(user, cwithdrow))
+		if (check_user_permission(user, cdeposit) || check_user_permission(user, cwithdraw))
 		{
 			show_transaction_menu();
 		}
@@ -725,12 +722,11 @@ cin.get();
 		{
 			cout << "You dont have permission to do transaction\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
-
 	}
 	else if (select == 7)
 	{
@@ -747,12 +743,11 @@ cin.get();
 		{
 			cout << "You dont have permission to manage user\n";
 			cout << "Press any kay to return to main menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_main_menu(user);
 		}
-
 	}
 	else
 	{
@@ -783,7 +778,6 @@ static string main_menu()
 		cin >> selection;
 	}
 	return selection;
-
 }
 
 char ask_user_permission(suser user, string question)
@@ -843,10 +837,10 @@ int add_user_permission(suser user)
 			cout << user.user_name << " have [Deposit client(s)] permission\n";
 			permission += 1024;
 		}
-		answer = ask_user_permission(user, "Do you like to have [Withdrow client(s)] permission to ");
+		answer = ask_user_permission(user, "Do you like to have [Withdraw client(s)] permission to ");
 		if (answer == 'y')
 		{
-			cout << user.user_name << " have [Withdrow client(s)] permission\n";
+			cout << user.user_name << " have [Withdraw client(s)] permission\n";
 			permission += 2048;
 		}
 
@@ -890,25 +884,26 @@ bool check_user_permission(suser user, int permission)
 {
 	return (user.permission & permission) ? true : false;
 }
-bool password_protection(suser& user)
+bool password_protection(suser &user)
 {
 	return (user.permission & 64) ? true : false;
 }
-string hide_password(suser& user, bool show_password)
+string hide_password(suser &user, bool show_password)
 {
 	return (show_password) ? user.user_password : "**********";
 }
 
-
 void show_main_menu(suser user)
 {
-	int sellct = stoi(main_menu());
-	project_bank(sellct, user);
-	if (sellct == 8) { return; }
-	cout << "\nPress any kay to return to main menu\n";
-	cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+	int select = stoi(main_menu());
+	project_bank(select, user);
+	if (select == 8)
+	{
+		return;
+	}
+
+	cin.ignore();
+	cin.get();
 	show_main_menu(user);
 }
 static string convert_record_data_to_line(suser user, string separator)
@@ -937,9 +932,9 @@ static suser convert_lin_data_to_records(string user, string separator)
 
 	return ruser;
 }
-static bool find_user_data_by_User_name(string file_name, string separator, string target, suser& user)
+static bool find_user_data_by_User_name(string file_name, string separator, string target, suser &user)
 {
-	vector<string>us;
+	vector<string> us;
 	us = get_string_from_file_to_vector(file_name);
 
 	for (string usr : us)
@@ -952,24 +947,25 @@ static bool find_user_data_by_User_name(string file_name, string separator, stri
 	}
 	return false;
 }
-bool admin_removing_protection(suser& user, string file_name, string separator, string target)
+bool admin_removing_protection(suser &user, string file_name, string separator, string target)
 {
 	return (target == "admin") ? true : false;
 }
-static void print_user_date_record_in_form(suser user, bool show_pasword)
+static void print_user_date_record_in_form(suser user, bool show_password)
 {
+	user.user_password = hide_password(user, show_password);
+
 	cout << "\n";
 	cout << '|' << left << setw(15) << user.user_name;
 	cout << '|' << left << setw(10) << user.user_password;
 	cout << '|' << left << setw(10) << user.permission;
 	cout << '|';
 
-
 	cout << "\n=================================================================================";
 }
 static void show_user_data_in_form(string file_name, string separator, bool show_password)
 {
-	vector<string>vs;
+	vector<string> vs;
 	suser user;
 
 	vs = get_string_from_file_to_vector(file_name);
@@ -986,9 +982,8 @@ static void show_user_data_in_form(string file_name, string separator, bool show
 		user = convert_lin_data_to_records(vs.at(i), separator);
 		print_user_date_record_in_form(user, show_password);
 	}
-
 }
-static suser Read_new_user_data(suser& user)
+static suser Read_new_user_data(suser &user)
 {
 
 	cout << "Enter User Name : ";
@@ -999,10 +994,9 @@ static suser Read_new_user_data(suser& user)
 
 	user.permission = add_user_permission(user);
 
-
 	return user;
 }
-static suser Read_new_user_data(suser& user, string target)
+static suser Read_new_user_data(suser &user, string target)
 {
 
 	user.user_name = target;
@@ -1011,7 +1005,6 @@ static suser Read_new_user_data(suser& user, string target)
 	getline(cin >> ws, user.user_password);
 
 	user.permission = add_user_permission(user);
-
 
 	return user;
 }
@@ -1049,17 +1042,16 @@ static void print_user_data_line_to_file(string separator, string file_name, str
 		cout << "\nDo you wont To add new User [ y/n] : ";
 		cin >> answer;
 	};
-
 }
 static vector<string> delete_user_data_by_Name(string file_name, string separator, string target, bool show_password)
 {
-	vector<string>vs;
+	vector<string> vs;
 	suser user;
 	vs = get_string_from_file_to_vector(file_name);
 
 	if (find_user_data_by_User_name(file_name, separator, target, user))
 	{
-		for (string& cl : vs)
+		for (string &cl : vs)
 		{
 			user = convert_lin_data_to_records(cl, separator);
 
@@ -1076,7 +1068,6 @@ static vector<string> delete_user_data_by_Name(string file_name, string separato
 					cout << "\nUser deleted successfully\n";
 				}
 			}
-
 		}
 	}
 	else
@@ -1085,14 +1076,14 @@ static vector<string> delete_user_data_by_Name(string file_name, string separato
 	}
 	return vs;
 }
-static vector<string> update_user_data_by_Name(string file_name, string separator, string target, suser& user, bool show_password)
+static vector<string> update_user_data_by_Name(string file_name, string separator, string target, suser &user, bool show_password)
 {
-	vector<string>vs;
+	vector<string> vs;
 	vs = get_string_from_file_to_vector(file_name);
 
 	if (find_user_data_by_User_name(file_name, separator, target, user))
 	{
-		for (string& s : vs)
+		for (string &s : vs)
 		{
 			user = convert_lin_data_to_records(s, separator);
 			if (user.user_name == target)
@@ -1121,7 +1112,7 @@ static vector<string> update_user_data_by_Name(string file_name, string separato
 	}
 	return vs;
 }
-static void Bbank_user(int select, suser user, bool show_password)
+static void Bank_user(int select, suser user, bool show_password)
 {
 	string separator = "#<>#";
 	string target;
@@ -1142,9 +1133,9 @@ static void Bbank_user(int select, suser user, bool show_password)
 		{
 			cout << "You dont have permission to show user\n";
 			cout << "Press any kay to return to user menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1163,9 +1154,9 @@ cin.get();
 		{
 			cout << "You dont have permission to add user\n";
 			cout << "Press any kay to return to user menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1184,9 +1175,9 @@ cin.get();
 			{
 				cout << "You dont have permission to delete this user\n";
 				cout << "Press any kay to return to user menu\n";
-				cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+				cin.ignore();
+				cin.get();
 				show_user_menu(user);
 			}
 			else
@@ -1198,9 +1189,9 @@ cin.get();
 		{
 			cout << "You dont have permission to delete user\n";
 			cout << "Press any kay to return to user menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1219,9 +1210,9 @@ cin.get();
 		{
 			cout << "You dont have permission to update user\n";
 			cout << "Press any kay to return to user menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1237,6 +1228,7 @@ cin.get();
 			target = user_input("Enter User Name you wont to find : ");
 			if (find_user_data_by_User_name(file_name, separator, target, user))
 			{
+				cout << "\n=================================================================================\n";
 				print_user_date_record_in_form(user, show_password);
 			}
 			else
@@ -1248,9 +1240,9 @@ cin.get();
 		{
 			cout << "You dont have permission to find user\n";
 			cout << "Press any kay to return to user menu\n";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			show_user_menu(user);
 		}
 	}
@@ -1303,9 +1295,9 @@ suser user_login()
 		{
 			cout << "Invalid password\n";
 			cout << "press any kay to Relogin";
-			cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+			cin.ignore();
+			cin.get();
 			return user_login();
 		}
 	}
@@ -1313,9 +1305,9 @@ cin.get();
 	{
 		cout << "User Not found \n";
 		cout << "press any kay to Relogin";
-		cout << "Press Enter to continue..."; 
-cin.ignore();
-cin.get();
+
+		cin.ignore();
+		cin.get();
 		return user_login();
 	}
 }
@@ -1323,12 +1315,100 @@ void show_user_menu(suser user)
 {
 	bool show_password = password_protection(user);
 	int select = stoi(user_menu());
-	Bbank_user(select, user, show_password);
+	Bank_user(select, user, show_password);
 }
 void login_bank_system()
 {
-	// suser user;
-	// user.permission=-1;
 	suser user = user_login();
 	show_main_menu(user);
+}
+
+string selectin()
+{
+	cout << "\n===============================\n";
+	cout << "      ATM system menu ";
+	cout << "\n===============================\n";
+	cout << "[1] Quick withdraw\n";
+	cout << "[2] Normal withdraw\n";
+	cout << "[3] Deposit\n";
+	cout << "[4] Chick balance\n";
+	string choice = user_input("Enter your choice from 1->4 : ");
+	while (choice != "1" && choice != "2" && choice != "3" && choice != "4")
+	{
+		cout << "Invalid choice Please Enter your choice from 1->4 : ";
+		cin >> choice;
+	}
+	return choice;
+}
+void quick_withdraw()
+{
+}
+void normal_withdraw()
+{
+}
+void deposit()
+{
+}
+void check_balance()
+{
+}
+static void project_ATM(int select, suser user)
+{
+	sclient client;
+	string separator = "#\\#";
+	string target;
+	string file_name = "Hesham.txt";
+	select = stoi(selectin());
+
+	if (select == 1)
+	{
+		clear_screen();
+
+		cout << "\n                        =================================\n";
+		cout << "                                 Quick withdraw       ";
+		cout << "\n                        =================================\n";
+		show_clients_data_in_form(file_name, separator);
+	}
+	else if (select == 2)
+	{
+		clear_screen();
+
+		cout << "\n===================================\n";
+		cout << "        Normal withdraw";
+		cout << "\n===================================\n";
+
+		print_Clint_data_line_to_file(separator, file_name, target);
+	}
+	else if (select == 3)
+	{
+		clear_screen();
+
+		cout << "\n===================================\n";
+		cout << "        Deposit screen";
+		cout << "\n===================================\n";
+
+		target = user_input("Enter Account number you wont to delete : ");
+		delete_clients_data_by_AccountNumber(file_name, separator, target);
+	}
+	else if (select == 4)
+	{
+		clear_screen();
+
+		cout << "\n===================================\n";
+		cout << "        Check Client Balance";
+		cout << "\n===================================\n";
+
+		update_clients_data_by_AccountNumber(file_name, separator, target, client);
+	}
+
+	else
+	{
+		End_screen();
+	}
+}
+void ATM_machine()
+{
+	suser user;
+	int select = 1;
+	project_ATM(select, user);
 }
